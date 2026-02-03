@@ -22,7 +22,26 @@ class HTMLNode():
     __eq__ = lambda self, other: self.tag == other.tag and self.value == other.value and self.children == other.children and self.props == other.props
 
 
-class leafNode(HTMLNode):
+class ParentNode(HTMLNode):
+    def __init__(self,tag, children, props = None):
+        super().__init__(tag,None,children,props)
+
+    def to_html(self):
+        if not self.tag:
+            raise(ValueError("ERROR: No value present"))
+        if not self.children:
+            raise(ValueError("ERROR: No Child Nodes present"))
+        else:
+            node_string = f"<{self.tag}>"
+            for child in self.children:
+                node_string = node_string + (f"{child.to_html()}")
+            node_string = node_string + (f"</{self.tag}>")
+            return node_string.strip()
+
+
+
+
+class LeafNode(HTMLNode):
     def __init__(self,tag = None,value = None ,props = None):
         super().__init__(tag,value,None,props)
     
